@@ -78,7 +78,7 @@ const copyCode = async (code, event) => {
         </div>
         <div class="disclaimer-text">
           <p>
-            <strong>Disclaimer:</strong> Download <a href="/jetbra.zip" class="highlight-link">jetbra.zip (230914)</a> and configure as described in readme.txt. 
+            <strong>Disclaimer:</strong> Download <a href="/jetbra.in_save_2024/jetbra.zip" class="highlight-link">jetbra.zip (230914)</a> and configure as described in readme.txt. 
             For educational and testing purposes only. Not for commercial use.
           </p>
           <p class="sub-text">This is a personal page, not an official website.</p>
