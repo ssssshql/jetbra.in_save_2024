@@ -26,6 +26,8 @@ const getIconIndex = (name) => {
   return key ? iconMapping[key] : 26
 }
 
+const downloadUrl = import.meta.env.VITE_DOWNLOAD_URL || '/jetbra.zip'
+
 const products = computed(() => {
   return Object.entries(keysData).map(([name, versions]) => {
     return {
@@ -43,8 +45,36 @@ const products = computed(() => {
 })
 
 const copyCode = async (code, event) => {
+  const doCopy = async () => {
+    // 优先使用 modern API
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(code)
+      return true
+    } else {
+      // 降级方案：使用 textarea + execCommand
+      const textArea = document.createElement('textarea')
+      textArea.value = code
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-9999px'
+      textArea.style.top = '0'
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      try {
+        const successful = document.execCommand('copy')
+        document.body.removeChild(textArea)
+        return successful
+      } catch (err) {
+        document.body.removeChild(textArea)
+        return false
+      }
+    }
+  }
+
   try {
-    await navigator.clipboard.writeText(code)
+    const success = await doCopy()
+    if (!success) throw new Error('Copy failed')
+    
     const btn = event.currentTarget
     if (btn) {
       btn.classList.add('copied')
@@ -78,7 +108,7 @@ const copyCode = async (code, event) => {
         </div>
         <div class="disclaimer-text">
           <p>
-            <strong>Disclaimer:</strong> Download <a href="/jetbra.in_save_2024/jetbra.zip" class="highlight-link">jetbra.zip (230914)</a> and configure as described in readme.txt. 
+            <strong>Disclaimer:</strong> Download <a :href="downloadUrl" class="highlight-link">jetbra.zip (230914)</a> and configure as described in readme.txt. 
             For educational and testing purposes only. Not for commercial use.
           </p>
           <p class="sub-text">This is a personal page, not an official website.</p>

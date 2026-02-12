@@ -15,7 +15,7 @@ RUN pnpm install
 
 # 复制所有文件并构建
 COPY . .
-RUN pnpm run build
+RUN pnpm run build:docker
 
 # 使用 nginx 镜像进行部署
 FROM nginx:stable-alpine
